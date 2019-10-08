@@ -1,12 +1,15 @@
-# Micro Integrator CLI
+# Using the Command-Line Interface
 
-The Micro Integrator CLI allows you to monitor the synapse artifacts (deployed in a specified Micro Integrator server) from the command line. The CLI is an alternative to the [management dashboard](../../../administer-and-observe/working-with-monitoring-dashboard), which provides a graphical view of the deployed artifacts.
+WSO2 Micro Integrator is shipped with a command-line interface (CLI)
+tool, which can be used as the management console.
 
-The dashboard as well as the CLI communicates with the management API of WSO2 Micro Integrator to function. Therefore, be sure to [enable the Management API](#enable-the-management-api) in the server before using the dashboard or the CLI.
+## Prerequisites
 
-## Enable the Management API
-
-To use the CLI tool, you need to enable the management API by passing the `-DenableManagementApi` system property when you start your Micro Integrator instance. 
+To use the CLI tool, you need to enable the management API when you
+start the WSO2 Micro Integrator instance. This can be done by passing
+the `-DenableManagementApi` system property when you
+start the Micro Integrator. Note that the default address is
+**https://localhost** and the port is **9164** .
 
 -   When you run the Micro Integrator on Docker, start your Docker
     container by passing the `enableManagementApi` system property:
@@ -15,11 +18,6 @@ To use the CLI tool, you need to enable the management API by passing the `-Dena
     docker run -p 8290:8290 -p 9164:9164 -e JAVA_OPTS="-DenableManagementApi=true" <Docker_Image_Name>
     ```
 
-    !!! Note
-        -  The default address is **https://localhost** and the port is **9164**.
-        -  The management API is not protected using an authorization mechanism. Therefore, take extra measures to secure this port if you are enabling this in production.
-        -  You can change the default host and port of the dashboard by using the [remote](#remote) command.
-
 -   When you run the Micro Integrator on a VM, use the following command
     to enable the `enableManagementApi` system property:
 
@@ -27,17 +25,14 @@ To use the CLI tool, you need to enable the management API by passing the `-Dena
     sh micro-integrator.sh -DenableManagementApi
     ```
 
--   The CLI tool is enabled for the embedded Micro Integrator in WSO2 Integration Studio by default.
+## Step 1: Install and run the CLI
 
-## Install and run the CLI
-
-1.  To download the CLI, go the **WSO2 Micro Integrator** website → [Additional Resources](https://wso2.com/integration/micro-integrator/install/), click **CLI Tooling** , and download the tool.
-2.  If you are using a UNIX-based operating system (Linux, Solaris, and Mac OS X), be sure to set the `MI_CLI_HOME/bin` folder path as the PATH:
-
-    ```bash
-    $ export PATH=/path/to/mi/cli/directory/bin:$PATH
-    ```
-3.  Execute the following command to start the CLI:
+1.  To download the CLI, go the **WSO2 Micro Integrator** website →
+    [Additional Resources](https://wso2.com/integration/micro-integrator/install/) ,
+    click **CLI Tooling** , and download the tool.
+2. Add the MI CLI bin folder to PATH in UNIX-based Operating System (Linux, Solaris, and Mac OS X)
+    `$ export PATH=/path/to/mi/cli/directory/bin:$PATH`
+3.  Execute the following command:
 
     ```bash
     ./mi
@@ -76,9 +71,26 @@ To use the CLI tool, you need to enable the management API by passing the `-Dena
     Use "mi [command] --help" for more information about a command.
     ```
 
-## Log in to the CLI
 
-To login using the CLI, use the following command. This will ask for the username and password. The default username is "admin" and the default password is "admin". 
+## Step 2: Configuring the CLI (Optional)
+
+### Enabling the Management API
+
+By default the Management API is disabled. To use the Management API you must use the system property `-DenableManagementApi` when starting the micro integrator
+
+!!! Note
+    These APIs are not protected using an authorization mechanism. Therefore, take extra measures to secure this port if you are enabling this in production.
+
+### Changing Management API Address and Port
+
+To configure the address and the port of the Management API in the CLI, use the [**remote**](#remote) command. If no configuration is done, the address and the port will have the default values.
+
+!!! Note
+    The default hostname is localhost and the port is 9164.
+
+## Step 3: Login using CLI
+
+To login using CLI, use the following command. This will ask for the username and password. The default username is "admin" and the default password is "admin". 
 
 ```bash
 mi remote login
@@ -86,8 +98,13 @@ mi remote login
 
 If you want to login using one line command, use the following command:
 
+!!! Note 
+
+If you are a Windows user, you needs to login as below command.
+
 ```bash
 mi remote login [username] [password]
+
 ```
 
 To logout from the CLI, please use the following command: 
@@ -96,7 +113,7 @@ To logout from the CLI, please use the following command:
 mi remote logout
 ```
 
-## Using the CLI 
+## Step 4: Using the CLI 
 
 ### Usage
 
@@ -132,8 +149,6 @@ mi version
         update [nick-name] [host] [port]     Update a Micro Integrator
         select [nick-name]                   Select a Micro Integrator on which commands are executed
         show                                 Show available Micro Integrators
-        login                                Login to use the Management API (will be prompted for username and password)
-        login [username] [password]          Login (inline username and password)
 
     Examples:
         # To add a Micro Integrator
@@ -150,12 +165,6 @@ mi version
 
         # To show available Micro Integrators
         mi remote show
-        
-        # login to the current (selected)  Micro Integrator instance
-        mi remote login     # will be prompted for username and password
-            
-        # login (with inline username and password)
-        mi remote login admin admin
     ```
  -  **log-level**
      ```bash
@@ -371,3 +380,4 @@ mi version
          # To get details about a specific local entry
          mi localentry show  sampleLocalEntry
     ```
+    
